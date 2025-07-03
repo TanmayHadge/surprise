@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Level 4 - Why Am I So Happy?</title>
+  <style>
+    @font-face {
+      font-family: 'burgundia';
+      src: url('fonts/burgundia.ttf');
+    }
+    @font-face {
+      font-family: 'the_morydane';
+      src: url('fonts/the_morydane.ttf');
+    }
+    @font-face {
+      font-family: 'toasty_milk';
+      src: url('fonts/toasty_milk.ttf');
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: url('background.jpg') no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'toasty_milk', sans-serif;
+    }
+
+    .container {
+      text-align: center;
+      padding: 2rem;
+      background-color: rgba(0, 0, 0, 0.4);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .quiz-box {
+      background-color: rgba(255, 192, 203, 0.45);
+      padding: 2rem;
+      border-radius: 20px;
+      max-width: 850px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.3);
+    }
+
+    h1 {
+      font-size: 2.3rem;
+      color: #fff;
+      font-family: 'burgundia', sans-serif;
+      margin-bottom: 1.2rem;
+    }
+
+    .question-img {
+      width: 200px;
+      border-radius: 12px;
+      margin-bottom: 1rem;
+    }
+
+    .options {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-top: 1rem;
+    }
+
+    .option {
+      width: 180px;
+      height: 220px;
+      background-color: rgba(255, 255, 255, 0.85);
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+      border: 4px solid white;
+      transition: transform 0.3s;
+    }
+
+    .option:hover {
+      transform: scale(1.05);
+    }
+
+    .option img {
+      width: 100%;
+      height: 170px;
+      object-fit: cover;
+    }
+
+    .option p {
+      font-family: 'the_morydane', sans-serif;
+      margin: 0;
+      padding: 0.5rem;
+      color: #222;
+      font-size: 1rem;
+    }
+
+    .message, .wrong-msg {
+      margin-top: 1.5rem;
+      font-family: 'burgundia', sans-serif;
+      font-size: 1.3rem;
+      color: white;
+      background-color: rgba(255, 105, 180, 0.9);
+      padding: 1.5rem;
+      border-radius: 12px;
+      max-width: 600px;
+      display: none;
+    }
+
+    .gift-img {
+      margin-top: 1rem;
+      max-width: 250px;
+      border-radius: 12px;
+      display: none;
+    }
+
+    .confetti {
+      position: absolute;
+      top: -100px;
+      width: 80px;
+      z-index: 999;
+      animation: fall 2s linear forwards;
+    }
+
+    @keyframes fall {
+      0% { top: -100px; opacity: 0; }
+      100% { top: 100vh; opacity: 1; }
+    }
+
+    .next-btn {
+      margin-top: 2rem;
+      padding: 1rem 2rem;
+      font-size: 1.1rem;
+      background-color: #ff69b4;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      display: none;
+    }
+
+    .heart-progress-bar {
+      width: 100%;
+      height: 20px;
+      background-color: #ddd;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+
+    .heart-bar-fill {
+      height: 100%;
+      background-color: #ff69b4;
+      border-radius: 10px;
+      transition: width 0.5s ease-in-out;
+    }
+
+    .heart-bar-hearts {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      height: 100%;
+    }
+
+    .heart {
+      width: 20px;
+      height: 20px;
+      margin-right: 5px;
+    }
+
+    .heart filled {
+      fill: #ff69b4;
+    }
+
+    .heart empty {
+      fill: #ddd;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="quiz-box">
+      <img src="me.jpg" class="question-img" alt="Why Happy Image">
+      <h1>Why am I so happy today? 🤔</h1>
+
+      <div class="options">
+        <div class="option"><img src="chemwalimaam.jpg" alt="Wrong reason 1"/><p>chemistry wali maam ne tariff kardi </p></div>
+        <div class="option"><img src="gaadi.jpg" alt="Wrong reason 2"/><p>Gaadi mil gayi</p></div>
+        <div class="option"><img src="khana mill gaya.jpg" alt="Wrong reason 3"/><p>Khana khane mil gaya</p></div>
+        <div class="option"><img src="tu.jpg" alt="Correct answer"/><p>Because of YOU 🥹</p></div>
+      </div>
+
+      <div class="wrong-msg" id="wrong-msg"></div>
+      <div class="message" id="correct-msg">Kya bataun... tujhe dekhke sab kuch theek lagta hai 💖</div>
+      <img src="apan dono.jpg" id="gift-img" class="gift-img" alt="Emotional Gift"/>
+      <button class="next-btn" id="next-btn" onclick="window.location.href='quiz5.html'">Next ➡️</button>
+    </div>
+  </div>
+
+  <script src="js/script.js"></script>
+  <script>
+    function animateButton(btn) {
+      btn.classList.add('bounce', 'glow');
+      setTimeout(() => btn.classList.remove('bounce', 'glow'), 450);
+    }
+    function confettiFromButton(btn) {
+      const rect = btn.getBoundingClientRect();
+      const x = rect.left + rect.width/2;
+      const y = rect.top + rect.height/2;
+      launchConfetti(x, y);
+    }
+    function handleCorrect(e) {
+      const btn = e.currentTarget;
+      animateButton(btn);
+      document.getElementById("correct-msg").style.display = "block";
+      document.getElementById("gift-img").style.display = "block";
+      document.getElementById("next-btn").style.display = "inline-block";
+      document.getElementById("wrong-msg").style.display = "none";
+      confettiFromButton(btn);
+    }
+    function handleWrong(e) {
+      const btn = e.currentTarget;
+      animateButton(btn);
+      const wrongBox = document.getElementById("wrong-msg");
+      wrongBox.innerText = btn.dataset.msg;
+      wrongBox.style.display = "block";
+      confettiFromButton(btn);
+    }
+    // Attach event listeners
+    const options = document.querySelectorAll('.option');
+    options[0].dataset.msg = 'Changasta jeet gaya 😎';
+    options[1].dataset.msg = 'Gaadi mil gayi 🚗';
+    options[2].dataset.msg = 'Khana khane mil gaya 🍽️';
+    options[3].addEventListener('click', handleCorrect);
+    options[0].addEventListener('click', handleWrong);
+    options[1].addEventListener('click', handleWrong);
+    options[2].addEventListener('click', handleWrong);
+    const nextBtn = document.getElementById('next-btn');
+    nextBtn.addEventListener('click', function(e) {
+      animateButton(nextBtn);
+      confettiFromButton(nextBtn);
+      setTimeout(() => { window.location.href = 'quiz5.html'; }, 350);
+    });
+  </script>
+</body>
+</html>
+

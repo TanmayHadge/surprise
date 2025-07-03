@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>The Birthday Girl Turns 18</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    @font-face {
+      font-family: 'midnight_12';
+      src: url('fonts/midnight_12.ttf') format('truetype');
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: url('background.jpg') no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'midnight_12', sans-serif;
+      color: #fff;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 2rem;
+      background-color: rgba(0, 0, 0, 0.5);
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      font-size: 1.5rem;
+      max-width: 800px;
+      margin-bottom: 2rem;
+    }
+
+    button {
+      padding: 1rem 2rem;
+      font-size: 1.2rem;
+      background-color: #ff69b4;
+      border: none;
+      color: white;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background-color: #ff85c1;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Happy Birthday!</h1>
+    <p>
+      Today is all about celebrating you! ✨ This little adventure was crafted with lots of love, laughter, and a few surprises. 
+      Every step is a memory, every quiz a smile. So take a deep breath, because you're about to unlock something magical.
+    </p>
+    <button onclick="startSurprise()">Are you ready for some surprises?</button>
+  </div>
+
+  <script>
+    function startSurprise() {
+      alert("Let's begin your journey 💖");
+      window.location.href = "rules.html";
+    }
+  </script>
+</body>
+</html>

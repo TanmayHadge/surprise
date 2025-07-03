@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Level 7 – Do You Still Hate Me?</title>
+  <style>
+    @font-face {
+      font-family: 'burgundia';
+      src: url('fonts/burgundia.ttf');
+    }
+    @font-face {
+      font-family: 'the_morydane';
+      src: url('fonts/the_morydane.ttf');
+    }
+    @font-face {
+      font-family: 'toasty_milk';
+      src: url('fonts/toasty_milk.ttf');
+    }
+    @font-face {
+      font-family: 'midnight_12';
+      src: url('fonts/midnight_12.ttf');
+    }
+
+    body {
+      background-image: url("background.jpg");
+      background-size: cover;
+      background-position: center;
+      font-family: 'toasty_milk', sans-serif;
+      margin: 0;
+      padding: 0;
+      color: #fff;
+    }
+
+    .quiz-container {
+      max-width: 700px;
+      margin: 10vh auto;
+      background: rgba(255, 192, 203, 0.45);
+      border-radius: 16px;
+      padding: 2rem;
+      text-align: center;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+      position: relative;
+    }
+
+    h2 {
+      font-family: 'burgundia', sans-serif;
+      font-size: 2rem;
+      margin-bottom: 2rem;
+      color: #fff;
+    }
+
+    .button-container {
+      position: relative;
+      height: 220px;
+      width: 100%;
+    }
+
+    .yes-btn, .no-btn {
+      padding: 0.8rem 1.8rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      font-family: 'the_morydane', sans-serif;
+      position: absolute;
+      transition: all 0.3s ease;
+    }
+
+    .yes-btn {
+      background-color: #ff9aa2;
+      color: white;
+      top: 50px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .no-btn {
+      background-color: #b5ead7;
+      color: #111;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    #message {
+      display: none;
+      margin-top: 2rem;
+      padding: 1.2rem;
+      background: rgba(255, 228, 225, 0.95);
+      border-radius: 14px;
+      font-family: 'burgundia', sans-serif;
+      font-size: 1.2rem;
+      color: #fff;
+    }
+
+    .next-button {
+      display: none;
+      margin-top: 1.5rem;
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      background-color: #ff8cb7;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      font-family: 'midnight_12', sans-serif;
+    }
+
+    .heart-progress-bar {
+      width: 100%;
+      height: 20px;
+      background-color: #ddd;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+
+    .heart-bar-fill {
+      height: 100%;
+      background-color: #ff9aa2;
+      border-radius: 10px;
+      transition: width 0.3s ease;
+    }
+
+    .heart-bar-hearts {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      height: 100%;
+    }
+
+    .heart {
+      width: 20px;
+      height: 20px;
+      margin-right: 5px;
+    }
+
+    .heart.filled {
+      fill: #ff9aa2;
+    }
+
+    .heart.empty {
+      fill: #ddd;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-container">
+    <h2>Kya tu abhi bhi mujhse nafrat karti hai? 🥺</h2>
+    <div class="button-container" id="buttonBox">
+      <button class="yes-btn" id="yesBtn">Yes 😤</button>
+      <button class="no-btn" id="noBtn">No 😊</button>
+    </div>
+
+    <div id="message">Awww mujhe pata tha tu mujhse nafrat nahi karti 😢🌸</div>
+    <button class="next-button" onclick="goToNextLevel()">Next</button>
+  </div>
+
+  <script src="js/script.js"></script>
+  <script>
+    const yesBtn = document.getElementById('yesBtn');
+    const noBtn = document.getElementById('noBtn');
+    const container = document.getElementById('buttonBox');
+
+    // Add touch support for mobile
+    yesBtn.addEventListener('touchstart', function(e) {
+      e.preventDefault(); // Prevents accidental click
+      moveButton();
+    });
+    // Add click support for desktop
+    yesBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      moveButton();
+    });
+
+    function animateButton(btn) {
+      btn.classList.add('bounce', 'glow');
+      setTimeout(() => btn.classList.remove('bounce', 'glow'), 450);
+    }
+    function confettiFromButton(btn) {
+      const rect = btn.getBoundingClientRect();
+      const x = rect.left + rect.width/2;
+      const y = rect.top + rect.height/2;
+      launchConfetti(x, y);
+    }
+
+    function moveButton() {
+      animateButton(yesBtn);
+      const containerWidth = container.offsetWidth;
+      const containerHeight = container.offsetHeight;
+      const btnWidth = yesBtn.offsetWidth;
+      const btnHeight = yesBtn.offsetHeight;
+
+      const maxLeft = containerWidth - btnWidth;
+      const maxTop = containerHeight - btnHeight;
+
+      const randLeft = Math.random() * maxLeft;
+      const randTop = Math.random() * (maxTop - 30); // keep some buffer from bottom
+
+      yesBtn.style.left = `${randLeft}px`;
+      yesBtn.style.top = `${randTop}px`;
+    }
+
+    noBtn.addEventListener('click', function(e) {
+      animateButton(noBtn);
+      confettiFromButton(noBtn);
+      document.getElementById('message').style.display = 'block';
+      document.querySelector('.next-button').style.display = 'inline-block';
+    });
+
+    function goToNextLevel() {
+      const nextBtn = document.querySelector('.next-button');
+      animateButton(nextBtn);
+      confettiFromButton(nextBtn);
+      setTimeout(() => { window.location.href = "quiz8.html"; }, 350);
+    }
+  </script>
+</body>
+</html>
