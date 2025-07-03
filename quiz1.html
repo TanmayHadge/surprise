@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Level 1 - Favorite Food</title>
+  <style>
+    @font-face {
+      font-family: 'burgundia';
+      src: url('fonts/burgundia.ttf') format('truetype');
+    }
+    @font-face {
+      font-family: 'the_morydane';
+      src: url('fonts/the_morydane.ttf') format('truetype');
+    }
+    @font-face {
+      font-family: 'toasty_milk';
+      src: url('fonts/toasty_milk.ttf') format('truetype');
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: url('background.jpg') no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'toasty_milk', sans-serif;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 2rem;
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .quiz-box {
+      background-color: rgba(255, 192, 203, 0.45); /* 45% visible soft pink */
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.3);
+      max-width: 800px;
+      width: 100%;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 2rem;
+      color: #ffffff;
+      font-family: 'burgundia', sans-serif;
+    }
+
+    .options {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.5rem;
+    }
+
+    .option {
+      border: 3px solid #fff;
+      border-radius: 10px;
+      padding: 1rem;
+      background-color: #ffe4ec; /* lighter pink for buttons */
+      font-family: 'the_morydane', sans-serif;
+      font-size: 1.2rem;
+      cursor: pointer;
+      color: #222;
+      max-width: 150px;
+      transition: transform 0.3s;
+    }
+
+    .option:hover {
+      transform: scale(1.05);
+    }
+
+    .option img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      display: block;
+      margin: 0 auto 0.5rem;
+      border-radius: 8px;
+    }
+
+    .message {
+      margin-top: 2rem;
+      font-size: 1.4rem;
+      font-family: 'burgundia', sans-serif;
+      color: #ffffff;
+      background-color: rgba(255, 182, 193, 0.9);
+      padding: 1.5rem;
+      border-radius: 12px;
+      display: none;
+      max-width: 600px;
+    }
+
+    .confetti {
+      position: absolute;
+      top: -100px;
+      width: 80px;
+      z-index: 999;
+      animation: fall 2s linear forwards;
+    }
+
+    @keyframes fall {
+      0% { top: -100px; opacity: 0; }
+      100% { top: 100vh; opacity: 1; }
+    }
+
+    .next-btn {
+      margin-top: 2rem;
+      padding: 1rem 2rem;
+      font-size: 1.1rem;
+      background-color: #ff69b4;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      display: none;
+    }
+
+    .heart-meter {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+    .heart {
+      width: 32px;
+      height: 29px;
+      margin: 0 4px;
+    }
+
+    .filled {
+      fill: #ff69b4;
+    }
+
+    .empty {
+      fill: #ccc;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="quiz-box">
+      <h1>What's Your Favorite Food?</h1>
+      <div class="options">
+        <div class="option"><img src="tornado.jpg" alt="Tornado" />Tornado</div>
+        <div class="option"><img src="fries.jpg" alt="Fries" />Fries</div>
+        <div class="option"><img src="sevpuri.jpg" alt="Sevpuri" />Sevpuri</div>
+        <div class="option"><img src="momos.jpg" alt="Momos" />Momos</div>
+      </div>
+    </div>
+
+    <div class="message" id="correctMessage">
+      Like you even I can't decide one option so I'm gonna treat you with all of these 😋
+    </div>
+
+    <button class="next-btn" id="nextBtn" onclick="window.location.href='quiz2.html'">Next ➡️</button>
+  </div>
+
+  <script src="js/script.js"></script>
+  <script>
+    // Button animation helpers
+    function animateButton(btn) {
+      btn.classList.add('bounce', 'glow');
+      setTimeout(() => btn.classList.remove('bounce', 'glow'), 450);
+    }
+
+    // Confetti from button position
+    function confettiFromButton(btn) {
+      const rect = btn.getBoundingClientRect();
+      const x = rect.left + rect.width/2;
+      const y = rect.top + rect.height/2;
+      launchConfetti(x, y);
+    }
+
+    // Handle answer click
+    function handleCorrectAnswer(e) {
+      const btn = e.currentTarget;
+      animateButton(btn);
+      document.getElementById("correctMessage").style.display = "block";
+      document.getElementById("nextBtn").style.display = "inline-block";
+      confettiFromButton(btn);
+    }
+
+    // Attach event listeners to answer options
+    document.querySelectorAll('.option').forEach(opt => {
+      opt.addEventListener('click', handleCorrectAnswer);
+    });
+
+    // Next button animation
+    const nextBtn = document.getElementById('nextBtn');
+    nextBtn.addEventListener('click', function(e) {
+      animateButton(nextBtn);
+      confettiFromButton(nextBtn);
+      setTimeout(() => { window.location.href = 'quiz2.html'; }, 350);
+    });
+  </script>
+</body>
+</html>
