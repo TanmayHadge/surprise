@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Level 5 – Favorite Flower</title>
+  <style>
+    @font-face {
+      font-family: 'burgundia';
+      src: url('fonts/burgundia.ttf');
+    }
+    @font-face {
+      font-family: 'the_morydane';
+      src: url('fonts/the_morydane.ttf');
+    }
+    @font-face {
+      font-family: 'toasty_milk';
+      src: url('fonts/toasty_milk.ttf');
+    }
+    @font-face {
+      font-family: 'midnight_12';
+      src: url('fonts/midnight_12.ttf');
+    }
+
+    body {
+      background-image: url("background.jpg");
+      background-size: cover;
+      background-position: center;
+      font-family: 'toasty_milk', sans-serif;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+
+    .quiz-container {
+      max-width: 800px;
+      margin: 10vh auto;
+      background: rgba(255, 192, 203, 0.45);
+      border-radius: 16px;
+      padding: 2rem;
+      text-align: center;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+    }
+
+    h2 {
+      font-family: 'burgundia', sans-serif;
+      font-size: 2rem;
+      color: #fff;
+    }
+
+    .options {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .option {
+      flex: 1 1 40%;
+      background-color: #ffe6ef;
+      padding: 1rem;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: transform 0.2s;
+      font-family: 'the_morydane', sans-serif;
+      color: #222;
+    }
+
+    .option:hover {
+      transform: scale(1.05);
+    }
+
+    .option img {
+      width: 100%;
+      max-width: 120px;
+      border-radius: 8px;
+      margin-bottom: 0.5rem;
+    }
+
+    #correct-msg {
+      display: none;
+      margin-top: 2rem;
+      background: rgba(255, 228, 225, 0.95);
+      padding: 1.5rem;
+      border-radius: 14px;
+      font-family: 'burgundia', sans-serif;
+      font-size: 1.2rem;
+      color: #fff;
+    }
+
+    .gift-img {
+      display: none;
+      max-width: 220px;
+      margin: 1.5rem auto 0;
+      border-radius: 12px;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+
+    .gift-img.show {
+      display: block;
+      opacity: 1;
+    }
+
+    .confetti {
+      position: absolute;
+      top: -100px;
+      width: 80px;
+      animation: fall 2.5s ease-in-out forwards;
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(-100px) rotate(0); }
+      100% { transform: translateY(120vh) rotate(360deg); }
+    }
+
+    .next-button {
+      display: none;
+      margin-top: 2rem;
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      background-color: #ff8cb7;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      font-family: 'midnight_12', sans-serif;
+    }
+
+    .heart-progress-bar {
+      width: 100%;
+      height: 20px;
+      background-color: #ddd;
+      border-radius: 10px;
+      margin-bottom: 20px;
+    }
+
+    .heart-bar-fill {
+      height: 100%;
+      background-color: #ff8cb7;
+      border-radius: 10px;
+      transition: width 0.5s ease-in-out;
+    }
+
+    .heart-bar-hearts {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      height: 100%;
+    }
+
+    .heart {
+      width: 20px;
+      height: 20px;
+      margin-right: 5px;
+    }
+
+    .heart.filled {
+      fill: #ff8cb7;
+    }
+
+    .heart.empty {
+      fill: #ddd;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-container">
+    <h2>Kaunsa flower sabse zyada pasand hai? 🌸</h2>
+    <div class="options">
+      <div class="option"><img src="rose.jpg" alt="Rose">🌹 Rose</div>
+      <div class="option"><img src="sunflower.jpg" alt="Sunflower">🌻 Sunflower</div>
+      <div class="option"><img src="lily.jpg" alt="Lily">�� Lily</div>
+      <div class="option"><img src="tulip.jpg" alt="Tulip">🌷 Tulip</div>
+    </div>
+
+    <div id="correct-msg">You deserve a whole bouquet 🌼, and I'm gonna get you one!</div>
+    <img src="flower.jpg" alt="Gift Flower" id="gift-img" class="gift-img" />
+    <button class="next-button" onclick="goToNextLevel()">Next</button>
+  </div>
+
+  <script src="js/script.js"></script>
+  <script>
+    function animateButton(btn) {
+      btn.classList.add('bounce', 'glow');
+      setTimeout(() => btn.classList.remove('bounce', 'glow'), 450);
+    }
+    function confettiFromButton(btn) {
+      const rect = btn.getBoundingClientRect();
+      const x = rect.left + rect.width/2;
+      const y = rect.top + rect.height/2;
+      launchConfetti(x, y);
+    }
+    function handleCorrectAnswer(e) {
+      const btn = e.currentTarget;
+      animateButton(btn);
+      document.getElementById('correct-msg').style.display = 'block';
+      document.querySelector('.next-button').style.display = 'inline-block';
+      const giftImage = document.getElementById('gift-img');
+      giftImage.classList.add('show');
+      confettiFromButton(btn);
+    }
+    document.querySelectorAll('.option').forEach(opt => {
+      opt.addEventListener('click', handleCorrectAnswer);
+    });
+    function goToNextLevel() {
+      const nextBtn = document.querySelector('.next-button');
+      animateButton(nextBtn);
+      confettiFromButton(nextBtn);
+      setTimeout(() => { window.location.href = "quiz6.html"; }, 350);
+    }
+  </script>
+</body>
+</html>
